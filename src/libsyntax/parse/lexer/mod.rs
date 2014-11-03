@@ -685,7 +685,7 @@ impl<'a> StringReader<'a> {
         // integer literal followed by field/method access or a range pattern
         // (`0..2` and `12.foo()`)
         if self.curr_is('.') && !self.nextch_is('.') && !self.nextch().unwrap_or('\0')
-                                                             .is_XID_start() {
+                                                             .is_xid_start() {
             // might have stuff after the ., and if it does, it needs to start
             // with a number
             self.bump();
@@ -1421,7 +1421,7 @@ fn ident_start(c: Option<char>) -> bool {
     (c >= 'a' && c <= 'z')
         || (c >= 'A' && c <= 'Z')
         || c == '_'
-        || (c > '\x7f' && c.is_XID_start())
+        || (c > '\x7f' && c.is_xid_start())
 }
 
 fn ident_continue(c: Option<char>) -> bool {
@@ -1431,7 +1431,7 @@ fn ident_continue(c: Option<char>) -> bool {
         || (c >= 'A' && c <= 'Z')
         || (c >= '0' && c <= '9')
         || c == '_'
-        || (c > '\x7f' && c.is_XID_continue())
+        || (c > '\x7f' && c.is_xid_continue())
 }
 
 #[cfg(test)]
