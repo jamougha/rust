@@ -21,7 +21,6 @@
 #![crate_type = "dylib"]
 #![feature(macro_rules, globs, import_shadowing)]
 
-use std::char;
 use std::str;
 use std::string;
 
@@ -216,7 +215,7 @@ impl<'a> Parser<'a> {
     fn ws(&mut self) {
         loop {
             match self.cur.clone().next() {
-                Some((_, c)) if char::is_whitespace(c) => { self.cur.next(); }
+                Some((_, c)) if c.is_whitespace() => { self.cur.next(); }
                 Some(..) | None => { return }
             }
         }
@@ -256,7 +255,7 @@ impl<'a> Parser<'a> {
             Some(i) => { ArgumentIs(i) }
             None => {
                 match self.cur.clone().next() {
-                    Some((_, c)) if char::is_alphabetic(c) => {
+                    Some((_, c)) if c.is_alphabetic() => {
                         ArgumentNamed(self.word())
                     }
                     _ => ArgumentNext
@@ -379,7 +378,7 @@ impl<'a> Parser<'a> {
     /// characters.
     fn word(&mut self) -> &'a str {
         let start = match self.cur.clone().next() {
-            Some((pos, c)) if char::is_XID_start(c) => {
+            Some((pos, c)) if c.is_XID_start() => {
                 self.cur.next();
                 pos
             }
@@ -388,7 +387,7 @@ impl<'a> Parser<'a> {
         let mut end;
         loop {
             match self.cur.clone().next() {
-                Some((_, c)) if char::is_XID_continue(c) => {
+                Some((_, c)) if c.is_XID_continue() => {
                     self.cur.next();
                 }
                 Some((pos, _)) => { end = pos; break }
